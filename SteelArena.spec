@@ -1,0 +1,61 @@
+# -*- mode: python ; coding: utf-8 -*-
+
+import os
+import panda3d
+
+# Находим путь к установленной библиотеке panda3d
+panda_path = os.path.dirname(panda3d.__file__)
+
+a = Analysis(
+    ['main.py'],
+    pathex=[],
+    binaries=[],
+    datas=[
+        # Копируем всю папку panda3d, чтобы подтянулись динамические библиотеки (.dll / .pyd)
+        (panda_path, 'panda3d'),
+    ],
+    hiddenimports=[
+        'panda3d.core',
+        'panda3d.direct',
+        'pandagl',
+        'direct.showbase.ShowBase',
+        'direct.gui.DirectGui',
+    ],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    noarchive=False,
+    optimize=0,
+)
+
+pyz = PYZ(a.pure)
+
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name='SteelArena',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+    icon=['icon.ico'],
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='SteelArena',
+)
